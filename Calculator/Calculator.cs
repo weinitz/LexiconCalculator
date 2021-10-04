@@ -4,18 +4,14 @@ using System.Text;
 
 namespace Calculator
 {
-    class Calculator
+    public class Calculator
     {
-        private double sum;
-        private bool isfirst = true;
-        public bool IS_FIRST
-        {
-            get { return isfirst; }
-        }
+        private double _sum;
+        public bool IsFirst { get; private set; } = true;
 
         public Calculator Addition(double value)
         {
-            var sum = this.sum + value;
+            var sum = this._sum + value;
             this.SetSum(sum);
             return this;
         }
@@ -23,7 +19,7 @@ namespace Calculator
         public Calculator Addition(double[] values)
         {
             this.SetSum(values[0]);
-            for (int i = 1; i < values.Length; i++)
+            for (var i = 1; i < values.Length; i++)
             {
                 this.Addition(values[i]);
             }
@@ -32,7 +28,7 @@ namespace Calculator
 
         public Calculator Subtraction(double value)
         {
-            var sum = this.sum - value;
+            var sum = this._sum - value;
             this.SetSum(sum);
             return this;
         }
@@ -40,7 +36,7 @@ namespace Calculator
         public Calculator Subtraction(double[] values)
         {
             this.SetSum(values[0]);
-            for (int i = 1; i < values.Length; i++)
+            for (var i = 1; i < values.Length; i++)
             {
                 this.Subtraction(values[i]);
             }
@@ -53,7 +49,7 @@ namespace Calculator
             {
                 throw new DivideByZeroException("Cannot divide by zero");
             }
-            var sum = this.sum / value;
+            var sum = this._sum / value;
             this.SetSum(sum);
             return this;
         }
@@ -61,7 +57,7 @@ namespace Calculator
         public Calculator Division(double[] values)
         {
             this.SetSum(values[0]);
-            for (int i = 1; i < values.Length; i++)
+            for (var i = 1; i < values.Length; i++)
             {
                 this.Division(values[i]);
             }
@@ -71,7 +67,7 @@ namespace Calculator
         public Calculator Multiplication(double[] values)
         {
             this.SetSum(values[0]);
-            for(int i = 1; i < values.Length; i++)
+            for(var i = 1; i < values.Length; i++)
             {
                 this.Multiplication(values[i]);
             }
@@ -80,26 +76,26 @@ namespace Calculator
 
         public Calculator Multiplication(double value)
         {
-            var sum = this.sum * value;
+            var sum = this._sum * value;
             this.SetSum(sum);
             return this;
         }
 
         private void SetSum(double sum)
         {
-            this.isfirst = false;
-            this.sum = sum;
+            this.IsFirst = false;
+            this._sum = sum;
         }
 
         public double GetSum()
         {
-            return this.sum;
+            return this._sum;
         }
 
         public void Clear()
         {
-            this.isfirst = true;
-            this.sum = 0;
+            this.IsFirst = true;
+            this._sum = 0;
         }
     }
 }

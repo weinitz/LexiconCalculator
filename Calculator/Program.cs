@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Calculator
 {
-    class Program
+    public class Program
     {
         private static readonly Menu menu = new Menu()
         {
@@ -119,7 +119,7 @@ namespace Calculator
 
         private static void InputAddition()
         {
-            if (calculator.IS_FIRST)
+            if (calculator.IsFirst)
             {
                 var number = InputNumbers("+");
                 calculator.Addition(number);
@@ -135,7 +135,7 @@ namespace Calculator
 
         private static void InputSubstraction()
         {
-            if (calculator.IS_FIRST)
+            if (calculator.IsFirst)
             {
                 var number = InputNumbers("-");
                 calculator.Subtraction(number);
@@ -153,7 +153,7 @@ namespace Calculator
         {
             try
             {
-                if (calculator.IS_FIRST)
+                if (calculator.IsFirst)
                 {
                     var numbers = InputNumbers("/");
                     calculator.Division(numbers);
@@ -176,7 +176,7 @@ namespace Calculator
 
         private static void InputMultiplication()
         {
-            if (calculator.IS_FIRST)
+            if (calculator.IsFirst)
             {
                 var numbers = InputNumbers("*");
                 calculator.Multiplication(numbers);
