@@ -28,6 +28,8 @@ namespace Calculator.Tests
 
             Assert.IsType<double[]>(actual);
             Assert.Equal(2, actual.Length);
+            Assert.Equal(1, actual[0]);
+            Assert.Equal(2, actual[1]);
         }
 
         [Theory]
