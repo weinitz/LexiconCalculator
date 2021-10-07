@@ -1,101 +1,117 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel;
+using System.Linq;
 
 namespace Calculator
 {
     public class Calculator
     {
+        public const double MaximumSum = 1000;
+        private bool _isFirst = true;
         private double _sum;
-        public bool IsFirst { get; private set; } = true;
 
-        public Calculator Addition(double value)
+        public bool IsFirst
         {
-            var sum = this._sum + value;
-            this.SetSum(sum);
+            get => _isFirst || _sum == 0;
+            private set => _isFirst = value;
+        }
+
+        public double Sum
+        {
+            get => _sum;
+            private set
+            {
+                _sum = ValidateResult(value);
+                IsFirst = false;
+            }
+        }
+
+        public Calculator Operate(Operators @operator, double[] values)
+        {
+            return @operator switch
+            {
+                Operators.Addition => Addition(values),
+                Operators.Subtraction => Subtraction(values),
+                Operators.Division => Division(values),
+                Operators.Multiplication => Multiplication(values),
+                _ => throw new InvalidEnumArgumentException()
+            };
+        }
+
+        public Calculator Calculate(double[] values, Action<double> action)
+        {
+            if (IsFirst)
+            {
+                var firstValue = values[0];
+                Sum = firstValue;
+                values = values.Skip(1).ToArray();
+            }
+
+            foreach (var value in values) action(value);
+
             return this;
         }
 
         public Calculator Addition(double[] values)
         {
-            this.SetSum(values[0]);
-            for (var i = 1; i < values.Length; i++)
-            {
-                this.Addition(values[i]);
-            }
+            Calculate(values, Addition);
             return this;
         }
 
-        public Calculator Subtraction(double value)
+        private void Addition(double value)
         {
-            var sum = this._sum - value;
-            this.SetSum(sum);
-            return this;
+            Sum += value;
         }
 
         public Calculator Subtraction(double[] values)
         {
-            this.SetSum(values[0]);
-            for (var i = 1; i < values.Length; i++)
-            {
-                this.Subtraction(values[i]);
-            }
+            Calculate(values, Subtraction);
             return this;
         }
 
-        public Calculator Division(double value)
+        private void Subtraction(double value)
         {
-            if (value == 0)
-            {
-                throw new DivideByZeroException("Cannot divide by zero");
-            }
-            var sum = this._sum / value;
-            this.SetSum(sum);
+            Sum -= value;
+        }
+
+        public Calculator Multiplication(params double[] values)
+        {
+            Calculate(values, Multiplication);
             return this;
+        }
+
+        private void Multiplication(double value)
+        {
+            Sum *= value;
         }
 
         public Calculator Division(double[] values)
         {
-            this.SetSum(values[0]);
-            for (var i = 1; i < values.Length; i++)
+            Calculate(values, Division);
+            return this;
+        }
+
+        private void Division(double value)
+        {
+            if (value == 0) throw new DivideByZeroException("Cannot divide by zero");
+            Sum /= value;
+        }
+
+        public Calculator Clear()
+        {
+            IsFirst = true;
+            Sum = 0;
+            return this;
+        }
+
+        private static double ValidateResult(double sum)
+        {
+            if (sum > MaximumSum)
             {
-                this.Division(values[i]);
+                throw new OverflowException();
             }
-            return this;
-        }
 
-        public Calculator Multiplication(double[] values)
-        {
-            this.SetSum(values[0]);
-            for(var i = 1; i < values.Length; i++)
-            {
-                this.Multiplication(values[i]);
-            }
-            return this;
-        }
-
-        public Calculator Multiplication(double value)
-        {
-            var sum = this._sum * value;
-            this.SetSum(sum);
-            return this;
-        }
-
-        private void SetSum(double sum)
-        {
-            this.IsFirst = false;
-            this._sum = sum;
-        }
-
-        public double GetSum()
-        {
-            return this._sum;
-        }
-
-        public void Clear()
-        {
-            this.IsFirst = true;
-            this._sum = 0;
+            return sum;
         }
     }
 }
