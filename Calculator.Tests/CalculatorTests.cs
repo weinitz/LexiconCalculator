@@ -16,12 +16,11 @@ namespace Calculator.Tests
             Assert.Equal(calculator.Sum, sum);
         }
 
-        [Fact]
-        public void AdditionTests()
+        [Theory]
+        [InlineData(new double[] { 1, 2 }, 3)]
+        [InlineData(new double[] { -1, 2 }, 1)]
+        public void AdditionTests(double[] values, double expected)
         {
-            var values = new double[] {1, 3};
-            const double expected = 4;
-
             var result = new Calculator().Addition(values).Sum;
 
             Assert.Equal(expected, result);
