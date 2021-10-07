@@ -9,11 +9,12 @@ namespace Calculator.Tests
     public class InputTests
     {
         [Theory]
-        [InlineData(Operators.Addition)]
-        public void CharFromOperator_Addition_ReturnsPlus(Operators @operator)
+        [InlineData(Operators.Addition, '+')]
+        [InlineData(Operators.Subtraction, '-')]
+        [InlineData(Operators.Multiplication, '*')]
+        [InlineData(Operators.Division, '/')]
+        public void CharFromOperator_Addition_ReturnExpected(Operators @operator, char expected)
         {
-            var expected = '+';
-
             // Act
             var actual = Input.CharFromOperator(@operator);
 
