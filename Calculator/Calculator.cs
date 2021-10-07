@@ -40,6 +40,10 @@ namespace Calculator
 
         public Calculator Calculate(double[] values, Action<double> action)
         {
+            if (values == null || values.Length == 0)
+            {
+                throw new ArgumentNullException();
+            }
             if (IsFirst)
             {
                 var firstValue = values[0];
