@@ -27,23 +27,23 @@ namespace Calculator.Tests
             Assert.Equal(expected, result);
         }
 
-        [Fact]
-        public void SubtractionTests()
+        [Theory]
+        [InlineData(new double[] { 1, 2 }, -1)]
+        [InlineData(new double[] { -1, 2 }, -3)]
+        public void SubtractionTests(double[] values, double expected)
         {
-            var values = new double[] {3, 2};
-            const double expected = 1;
 
             var result = new Calculator().Subtraction(values).Sum;
 
             Assert.Equal(expected, result);
         }
 
-        [Fact]
-        public void DivideTests()
+        [Theory]
+        [InlineData(new double[] { 1, 3 }, 0.3333)]
+        [InlineData(new double[] { -1, 3 }, -0.3333)]
+        [InlineData(new double[] { 3, -1 }, -3)]
+        public void DivideTests(double[] values, double expected)
         {
-            var values = new double[] {1, 3};
-            const double expected = 0.3333;
-
             var result = new Calculator().Division(values).Sum;
 
             Assert.Equal(expected, result, 4);
@@ -63,6 +63,19 @@ namespace Calculator.Tests
             Assert.Equal("Cannot divide by zero", result.Message);
         }
 
+
+        [Fact]
+        public void CalculateEmptyArray()
+        {
+            var values = new double[] {  };
+
+            var calculator = new Calculator();
+            
+            var result = Assert.Throws<ArgumentNullException>(
+                () => calculator.Division(values)
+            );
+        }
+
         [Fact]
         public void AdditionSumToHigh()
         {
@@ -76,6 +89,7 @@ namespace Calculator.Tests
         [Theory]
         [InlineData(new double[] {1, 2, 3}, 6)]
         [InlineData(new double[] {1, 2}, 2)]
+        [InlineData(new double[] {1, 0, -1}, 0)]
         public void MultiplicationTests(double[] input, int expected)
         {
             var result = new Calculator().Multiplication(input).Sum;
